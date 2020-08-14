@@ -8,4 +8,4 @@
 - https://fullcalendar.io/
 
 ## 화면
-![Alt text](https://github.com/LeeChiWon/FullCalendar/blob/master/demo.png,"화면")
+![Alt text](https://github.com/LeeChiWon/FullCalendar/blob/master/demo.png)
