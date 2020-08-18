@@ -2,7 +2,7 @@
  *  일정 편집
  * ************** */
 
-var editEvent = function (event, element, view) {    
+var editEvent = function (event, element, view) {
     $('#deleteEvent').data('id', event._id); //클릭한 이벤트 ID
 
     $('.popover.fade.top').remove();
@@ -72,15 +72,15 @@ var editEvent = function (event, element, view) {
         event.start = startDate;
         event.end = displayDate;
         event.backgroundColor = editColor.val();
-        event.description = editDesc.val();      
-        
+        event.description = editDesc.val();
 
-        var eventData = {  
-            _id:event._id,          
+
+        var eventData = {
+            _id: event._id,
             title: editTitle.val(),
-            description: editDesc.val(), 
+            description: editDesc.val(),
             start: startDate,
-            end: displayDate,                      
+            end: displayDate,
             backgroundColor: editColor.val(),
             textColor: '#ffffff',
             allDay: statusAllDay
@@ -91,37 +91,35 @@ var editEvent = function (event, element, view) {
             type: "post",
             url: "./php/updateEvent.php",
             data: {
-                "eventData":eventData
+                "eventData": eventData
             },
             success: function (response) {
-                if(response)
-                {
+                if (response) {
                     $("#calendar").fullCalendar('updateEvent', event);
-                    $('#calendar').fullCalendar('refetchEvents'); 
+                    $('#calendar').fullCalendar('refetchEvents');
                     alert('일정이 수정되었습니다.')
-                }                
+                }
+            }
+        });
+    });
+    // 삭제버튼
+    $('#deleteEvent').on('click', function () {
+        let eventID = $(this).data('id');
+        $('#deleteEvent').unbind();
+        eventModal.modal('hide');
+
+        $.ajax({
+            type: "post",
+            url: "./php/deleteEvent.php",
+            data: { "eventID": eventID },
+            success: function (response) {
+                if (response) {
+                    $("#calendar").fullCalendar('removeEvents', $(this).data('id'));
+                    $('#calendar').fullCalendar('refetchEvents');
+                    alert('일정이 삭제되었습니다.');
+                }
             }
         });
     });
 };
 
-// 삭제버튼
-$('#deleteEvent').on('click', function () {
-    let eventID=$(this).data('id');
-    $('#deleteEvent').unbind();    
-    eventModal.modal('hide');
-
-    $.ajax({
-        type: "post",
-        url: "./php/deleteEvent.php",
-        data: {"eventID":eventID},
-        success: function (response) {
-            if(response)
-            {
-                $("#calendar").fullCalendar('removeEvents', $(this).data('id'));
-                $('#calendar').fullCalendar('refetchEvents');  
-                alert('일정이 삭제되었습니다.');
-            }            
-        }
-    });
-});

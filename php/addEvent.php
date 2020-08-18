@@ -9,5 +9,11 @@ if (isset($_POST['eventData'])) {
     $result = $dbController->sql_exec("INSERT INTO event(title,description,start,end,backgroundColor,textColor,allDay)
                                         VALUES('{$datas['title']}','{$datas['description']}','{$datas['start']}','{$datas['end']}','{$datas['backgroundColor']}','{$datas['textColor']}',{$datas['allDay']})");
 
-    echo $result;   
+    if ($result) {
+        require_once 'email_send.php';
+
+        $email = new emailController($datas['title'], $datas['description'], $datas['start'], $datas['end']);
+        $email->startMailing();
+    }
+    echo $result;
 }
